@@ -1,0 +1,30 @@
+﻿<Window x:Class="CoffeeAndCake.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoffeeAndCake"
+        mc:Ignorable="d"
+        Title="Recipes" Height="550" Width="910">
+    <Grid Background="#fdb249">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="69*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Side navigation panel -->
+        <StackPanel Grid.Column="0" Background="#fed7c1">
+            <TextBlock TextDecorations="Underline" Style="{DynamicResource TextBoxHiperLink}">
+                <Hyperlink Click="Dishes">Dishes</Hyperlink>
+            </TextBlock>
+            <TextBlock TextDecorations="Underline" Style="{DynamicResource TextBoxHiperLink}">
+                <Hyperlink Click="Ingredients">Ingredients</Hyperlink>
+            </TextBlock>
+            <TextBlock TextDecorations="Underline" Style="{DynamicResource TextBoxHiperLink}">
+                <Hyperlink Click="Orders">Orders</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Main content -->
+        <Frame Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
