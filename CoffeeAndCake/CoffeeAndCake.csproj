@@ -91,6 +91,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ConverterToGray.cs" />
+    <Compile Include="Converters\DishConverter.cs" />
+    <Compile Include="Converters\ExtendedIngredients.cs" />
+    <Compile Include="Converters\IngredientToIngredient.cs" />
     <Compile Include="Pages\Recipe.xaml.cs">
       <DependentUpon>Recipe.xaml</DependentUpon>
     </Compile>

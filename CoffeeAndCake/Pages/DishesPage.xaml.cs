@@ -1,6 +1,9 @@
 ﻿using CoffeeAndCake.BDSHKA;
+using CoffeeAndCake.Converters;
+using CoffeeAndCake.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,15 +27,41 @@ namespace CoffeeAndCake.Pages
         public DishesPage()
         {
             InitializeComponent();
-
-            ListServices.ItemsSource = App.BD.Dish.ToList();
             var type = App.BD.Category.ToList();
             type.Insert(0, new BDSHKA.Category() { Id = 0, Name = "Все" });
             SearchCB.ItemsSource = type.ToList();
             SearchCB.DisplayMemberPath = "Name";
+            SearchCB.SelectedIndex = 0;
+            SliderSL.Minimum = 0;
+            SliderSL.Maximum = 5000;
+            SliderSL.LowerValue = 0;
+            SliderSL.UpperValue = 5000;
             MinTB.Text = (SliderSL.LowerValue).ToString();
             MaxTB.Text = (SliderSL.UpperValue).ToString();
+        }
 
+        private void ApplyFilters()
+        {
+            var query = App.BD.Dish.Where(i =>
+                i.Name.StartsWith(SearchTB.Text) &&
+                i.FinalPriceInCents <= SliderSL.UpperValue &&
+                i.FinalPriceInCents >= SliderSL.LowerValue).ToList();
+            if ((bool)GalkaCK.IsChecked == true)
+            {
+                query = query.Where(x =>
+                {
+                    return DishConverter.ReadyForCooking(x);
+                }).ToList();
+            }
+            else if ((bool)GalkaCK.IsChecked == false)
+            {
+            }
+            if (SearchCB.SelectedIndex != 0)
+            {
+                query = query.Where(i => i.CategoryId == SearchCB.SelectedIndex).ToList();
+            }
+
+            ListServices.ItemsSource = new List<Dish>(query);
         }
 
         private void ListServices_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -50,29 +79,29 @@ namespace CoffeeAndCake.Pages
             double minValue = (minPercent * 5000) / 100;
             double maxValue = (maxPercent * 5000) / 100;
 
-            MinTB.Text = Math.Round(minValue).ToString(); // Округляю значение до целого числа
-            MaxTB.Text = Math.Round(maxValue).ToString(); // Округляю значение до целого числа
+            MinTB.Text = Math.Round(minValue).ToString();
+            MaxTB.Text = Math.Round(maxValue).ToString();
 
-            if (ListServices != null)
-            {
-                ListServices.ItemsSource = new List<Dish>(App.BD.Dish.Where(p => p.FinalPriceInCents >= SliderSL.LowerValue && p.FinalPriceInCents <= SliderSL.UpperValue).ToList());
-            }
+            ApplyFilters();
         }
 
         private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ListServices.ItemsSource = new List<Dish>(App.BD.Dish.Where(i => i.Name.StartsWith(SearchTB.Text)));
+            ApplyFilters();
         }
 
         private void SearchCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var catygory = SearchCB.SelectedItem as Category;
-            ListServices.ItemsSource = new List<Dish>(App.BD.Dish.Where(x => x.CategoryId == catygory.Id).ToList());
+            ApplyFilters();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-
+            ApplyFilters();
+        }
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
         }
     }
 }

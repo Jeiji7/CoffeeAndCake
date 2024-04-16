@@ -42,6 +42,7 @@
           <Property Name="RecipeLink" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="FinalPriceInCents" Type="int" Nullable="false" />
+          <Property Name="Visible" Type="bit" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -290,6 +291,7 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_Dish_Category" FromRole="Dish" ToRole="Category" />
           <NavigationProperty Name="CookingStage" Relationship="Self.FK_CookingStage_Dish1" FromRole="Dish" ToRole="CookingStage" />
           <NavigationProperty Name="OrderedDish" Relationship="Self.FK_OrderedDish_Dish" FromRole="Dish" ToRole="OrderedDish" />
+          <Property Name="Visible" Type="Boolean" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -536,6 +538,7 @@
           <EntitySetMapping Name="Dish">
             <EntityTypeMapping TypeName="NyamNyam_Session2Model.Dish">
               <MappingFragment StoreEntitySet="Dish">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="BaseServingsQuantity" ColumnName="BaseServingsQuantity" />

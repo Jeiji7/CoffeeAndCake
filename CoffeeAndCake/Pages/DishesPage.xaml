@@ -5,13 +5,17 @@
       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:Effects="clr-namespace:System.Windows.Media.Effects;assembly=PresentationCore"
+      xmlns:converters="clr-namespace:CoffeeAndCake.Converters"
       xmlns:local="clr-namespace:CoffeeAndCake.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="800"
       Title="DishesPage">
-    
+
 
     <Grid Background="AntiqueWhite">
+    <Grid.Resources>
+            <converters:ConverterToGray x:Key="ToGray"></converters:ConverterToGray>
+    </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -29,7 +33,7 @@
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center">
-            <CheckBox Margin="5" Checked="CheckBox_Checked"></CheckBox>
+            <CheckBox Margin="5" x:Name="GalkaCK" Unchecked="CheckBox_Checked" Checked="CheckBox_Checked" IsChecked="False"></CheckBox>
             <TextBlock TextWrapping="Wrap">Show only dishes with availbal ingredients</TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
@@ -43,22 +47,25 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="5">Price:</TextBlock>
-                <controls:RangeSlider AutoToolTipPlacement="TopLeft" Minimum="0" Maximum="5000" LowerValue="0" UpperValue="5000" Width="270" Height="20" x:Name="SliderSL" RangeSelectionChanged="SliderSL_RangeSelectionChanged"/>
+                <controls:RangeSlider AutoToolTipPlacement="TopLeft"  Width="270" Height="20" x:Name="SliderSL" RangeSelectionChanged="SliderSL_RangeSelectionChanged"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0 20 0 0">
             <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ListServices"  Width="630" Height="280" SelectionChanged="ListServices_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid x:Name="index">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
                             <StackPanel Margin="10" Width="165" Height="230" >
-                                <Image x:Name="FinishedIMG" Grid.Row="0" Width="165" Height="120" Source="/Images/End items.png" Visibility="Collapsed"/>
-                                <Image x:Name="AvailableIMG" Grid.Row="0" Source="{Binding RecipeLink}" Height="120" Width="165" Visibility="Visible" />
+                                <Image x:Name="AvailableIMG" Grid.Row="0" Height="120" Width="165">
+                                    <Image.Source>
+                                        <FormatConvertedBitmap Source="{Binding RecipeLink}" DestinationFormat="{Binding ., Converter={StaticResource ToGray}}"/>
+                                    </Image.Source>
+                                </Image>
                                 <TextBlock Grid.Row="1" Text="{Binding Name}"  TextWrapping="Wrap" Height="70"></TextBlock>
                                 <TextBlock Grid.Row="2" Text="{Binding FinalPriceInCents}"></TextBlock>
                             </StackPanel>
