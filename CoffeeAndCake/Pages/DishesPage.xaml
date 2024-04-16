@@ -13,9 +13,9 @@
 
 
     <Grid Background="AntiqueWhite">
-    <Grid.Resources>
+        <Grid.Resources>
             <converters:ConverterToGray x:Key="ToGray"></converters:ConverterToGray>
-    </Grid.Resources>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -54,22 +54,21 @@
             <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ListServices"  Width="630" Height="280" SelectionChanged="ListServices_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid x:Name="index">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition Height="3*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Margin="10" Width="165" Height="230" >
-                                <Image x:Name="AvailableIMG" Grid.Row="0" Height="120" Width="165">
+                            <Grid Width="190" Height="165">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="165"/>
+                                </Grid.RowDefinitions>
+                                <Image Stretch="UniformToFill">
                                     <Image.Source>
-                                        <FormatConvertedBitmap Source="{Binding RecipeLink}" DestinationFormat="{Binding ., Converter={StaticResource ToGray}}"/>
+                                        <FormatConvertedBitmap Source="{Binding RecipeLink}" DestinationFormat="{Binding , Converter={StaticResource ToGray}}"/>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Grid.Row="1" Text="{Binding Name}"  TextWrapping="Wrap" Height="70"></TextBlock>
-                                <TextBlock Grid.Row="2" Text="{Binding FinalPriceInCents}"></TextBlock>
-                            </StackPanel>
-                        </Grid>
+                              
+                                <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Bottom" Background="#88000000" >
+                                <TextBlock Foreground="White" Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap" ></TextBlock>
+                                <TextBlock Foreground="White" Text="{Binding FinalPriceInCents}" HorizontalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemsPanel>
